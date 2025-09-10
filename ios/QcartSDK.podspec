@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = '1.0.0'
   s.summary      = 'Qcart iOS SDK'
   s.homepage     = 'https://github.com/comoquiero/qcart-sdk-ios'
-  s.license      = { :type => 'MIT' }
+  s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { 'Qcart' => 'dev@qcart.com' }
   s.source       = { :git => 'https://github.com/comoquiero/qcart-sdk-ios.git', :tag => 'main' }
   s.platform     = :ios, '15.0'

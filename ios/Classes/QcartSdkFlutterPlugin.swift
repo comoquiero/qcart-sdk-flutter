@@ -1,6 +1,5 @@
 import Flutter
 import UIKit
-import QcartParser
 
 public class QcartSdkFlutterPlugin: NSObject, FlutterPlugin {
     
