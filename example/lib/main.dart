@@ -23,9 +23,9 @@ class _QcartTestPageState extends State<QcartTestPage> {
     super.initState();
 
     // Listen for incoming deep links
-    QcartSdkFlutter.setDeeplinkListener((res) {
+    QcartSdkFlutter.setDeeplinkListener((QcartResult qcartResult) {
       setState(() {
-        result = res;
+        result = qcartResult;
       });
     });
 
@@ -42,9 +42,9 @@ class _QcartTestPageState extends State<QcartTestPage> {
 
   Future<void> _handleUrl(String url) async {
     try {
-      final res = await QcartSdkFlutter.handleDeepLink(url);
+      final qcartResult = await QcartSdkFlutter.handleDeepLink(url);
       setState(() {
-        result = res;
+        result = qcartResult;
       });
     } on PlatformException catch (e) {
       debugPrint('Error handling deep link: ${e.message}');
