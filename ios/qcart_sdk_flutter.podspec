@@ -10,7 +10,7 @@ Qcart Flutter plugin that bridges to the native Qcart iOS SDK and Android SDK.
   s.author           = { 'Qcart' => 'dev@qcart.com' }
   s.source           = { :path => '.' }
 
-  s.source_files     = 'Classes/**/*', 'QcartSDK/**/*'
+  s.source_files     = 'Classes/**/*'
   s.dependency 'Flutter'
   s.platform         = :ios, '15.0'
 

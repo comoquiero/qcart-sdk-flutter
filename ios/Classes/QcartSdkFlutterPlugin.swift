@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import QcartSDK  // matches the podspec name
 
 public class QcartSdkFlutterPlugin: NSObject, FlutterPlugin {
     
@@ -17,7 +18,7 @@ public class QcartSdkFlutterPlugin: NSObject, FlutterPlugin {
 
         // Parse using your existing parser
         let result = QcartParser.handle(url: url)
-        
+
         // Convert to dictionary for Flutter
         if let jsonString = result.toJSON(),
         let data = jsonString.data(using: .utf8),
