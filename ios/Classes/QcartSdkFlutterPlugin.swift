@@ -12,8 +12,18 @@ public class QcartSdkFlutterPlugin: NSObject, FlutterPlugin {
     }
     
     // Send raw deep link URL to Flutter
-    public static func sendDeepLink(_ url: String) {
-        channel?.invokeMethod("onDeepLink", arguments: ["url": url])
+    public static func sendDeepLink(_ urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+
+        // Parse using your existing parser
+        let result = QcartParser.handle(url: url)
+        
+        // Convert to dictionary for Flutter
+        if let jsonString = result.toJSON(),
+        let data = jsonString.data(using: .utf8),
+        let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            channel?.invokeMethod("onDeepLink", arguments: map)
+        }
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
