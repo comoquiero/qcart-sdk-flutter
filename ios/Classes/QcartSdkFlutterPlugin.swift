@@ -1,13 +1,13 @@
 import Flutter
 import UIKit
 
-public class SwiftQcartSdkFlutterPlugin: NSObject, FlutterPlugin {
+public class QcartSdkFlutterPlugin: NSObject, FlutterPlugin {
     
     private static var channel: FlutterMethodChannel?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         channel = FlutterMethodChannel(name: "qcart_sdk_flutter", binaryMessenger: registrar.messenger())
-        let instance = SwiftQcartSdkFlutterPlugin()
+        let instance = QcartSdkFlutterPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel!)
     }
     
