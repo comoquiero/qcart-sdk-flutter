@@ -22,5 +22,5 @@ Qcart Flutter plugin that bridges to the native Qcart iOS SDK and Android SDK.
   s.swift_version = '5.0'
 
   # Add Qcart iOS SDK from GitHub
-  s.dependency 'QcartSDK', :git => 'https://github.com/comoquiero/qcart-sdk-ios.git', :branch => 'main'
+  s.dependency 'QcartSDK', '~> 1.0.0'
 end
