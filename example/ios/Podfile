@@ -33,7 +33,7 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
   # Add QcartSDK dependency
-  pod 'QcartSDK', :git => 'https://github.com/qcart/qcart-sdk-ios.git'
+  pod 'QcartSDK', :git => 'https://github.com/comoquiero/qcart-sdk-ios.git'
 
   target 'RunnerTests' do
     inherit! :search_paths
