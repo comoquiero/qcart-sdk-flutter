@@ -15,39 +15,48 @@ class QcartTestPage extends StatefulWidget {
 
 class _QcartTestPageState extends State<QcartTestPage> {
   QcartResult? result;
-  final TextEditingController _controller =
-      TextEditingController(text: "qcart://test.abc/path/name?qcart=true&skus=111,222:3#hashparam=123"); // Preloaded URL
+
+  // Preload a sample URL in the TextField if no real deeplink comes
+  final TextEditingController _controller = TextEditingController(
+    text:
+        'qcart://test.abc/path/name?qcart=true&skus=111,222:3#hashparam=123',
+  );
 
   @override
   void initState() {
     super.initState();
 
+    bool deeplinkReceived = false;
+
     // Listen for incoming deep links
     QcartSdkFlutter.setDeeplinkListener((QcartResult qcartResult) {
+      deeplinkReceived = true; // Mark that a real deep link arrived
       setState(() {
         result = qcartResult;
+        _controller.text = qcartResult.url ?? '';
       });
     });
 
-    // Optionally, handle cold start deep link
-    _checkInitialDeepLink();
-
-    // Preload URL: parse it automatically
-    _handleUrl(_controller.text);
+    // Delay parsing the example URL to let a real deep link arrive first
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (!deeplinkReceived) {
+        _handleManualUrl(_controller.text);
+      }
+    });
   }
 
-  Future<void> _checkInitialDeepLink() async {
-    // Keep as is or remove if using preloaded URL
-  }
-
-  Future<void> _handleUrl(String url) async {
+  /// Handles manual URLs entered by the user
+  Future<void> _handleManualUrl(String url) async {
     try {
       final qcartResult = await QcartSdkFlutter.handleDeepLink(url);
       setState(() {
         result = qcartResult;
+
+        // Update the TextField safely
+        _controller.text = qcartResult.url ?? '';
       });
     } on PlatformException catch (e) {
-      debugPrint('Error handling deep link: ${e.message}');
+      debugPrint('Error handling manual URL: ${e.message}');
     } catch (e) {
       debugPrint('Unexpected error: $e');
     }
@@ -56,17 +65,18 @@ class _QcartTestPageState extends State<QcartTestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('QCart SDK Example')),
+      appBar: AppBar(title: const Text('Qcart SDK Example')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // TextField for manual URL testing
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
-                labelText: 'Enter Deeplink URL',
+                labelText: 'Enter Deeplink URL manually',
               ),
-              onSubmitted: _handleUrl,
+              onSubmitted: _handleManualUrl,
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -99,7 +109,7 @@ class _QcartTestPageState extends State<QcartTestPage> {
                     )
                   : const Center(
                       child: Text(
-                        'Enter a deeplink or wait for one to arrive',
+                        'Waiting for a deep link or enter a URL manually...',
                         style: TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
@@ -117,4 +127,8 @@ const labelStyle = TextStyle(
   fontSize: 16,
   color: Colors.black,
 );
-const valueStyle = TextStyle(fontSize: 16, color: Colors.blue);
+
+const valueStyle = TextStyle(
+  fontSize: 16,
+  color: Colors.blue,
+);

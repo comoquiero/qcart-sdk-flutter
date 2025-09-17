@@ -189,9 +189,11 @@ packages:
   qcart_sdk_flutter:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "1fea6da9fc01b3dd3a68f4c865d2c27f04329d04"
+      url: "https://github.com/comoquiero/qcart-sdk-flutter.git"
+    source: git
     version: "0.0.1+1"
   sky_engine:
     dependency: transitive

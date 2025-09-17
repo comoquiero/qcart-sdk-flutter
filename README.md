@@ -2,7 +2,7 @@
 
 ### Android
 ```
-cd qcart_sdk_flutter/example
+cd example
 flutter pub get
 flutter run
 ```
