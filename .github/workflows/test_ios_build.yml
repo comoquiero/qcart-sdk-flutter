@@ -1,7 +1,7 @@
 name: Test iOS Plugin Build
 
 on:
-  workflow_dispatch: # Para correrlo manualmente
+  workflow_dispatch: 
 
 jobs:
   build_ios:
@@ -22,7 +22,16 @@ jobs:
           flutter pub get
 
       - name: Compilar app de ejemplo para iOS
-        # Usamos --no-codesign porque no tenemos certificados de Apple configurados en esta Mac virtual
         run: |
           cd example
+          # Compilamos específicamente para el simulador
           flutter build ios --no-codesign --simulator
+
+      - name: Subir la App de Ejemplo (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: App-Ejemplo-iOS
+          # Esta es la ruta estándar donde Flutter deja el ejecutable del simulador
+          path: example/build/ios/iphonesimulator/Runner.app
+          # Opcional: Si Appetize te pide un .zip, puedes comprimirlo antes o
+          # simplemente subir la carpeta .app y GitHub la zipeará automáticamente.
