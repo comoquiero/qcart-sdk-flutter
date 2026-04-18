@@ -1,0 +1,38 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -module-name QcartSDK -package-name qcart_sdk_ios
+// swift-module-flags-ignorable:  -interface-compiler-version 6.1.2
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_Concurrency.MainActor public class QcartManager {
+  @_Concurrency.MainActor public init()
+  @_Concurrency.MainActor public func handle(url: Foundation.URL) -> QcartSDK.QcartResult
+  @_Concurrency.MainActor public func initManager() -> QcartSDK.QcartResult?
+  @objc deinit
+}
+public struct QcartResult : Swift.Codable {
+  public let url: Swift.String?
+  public let pathSegments: [Swift.String]
+  public let queryParameters: [Swift.String : Swift.String]
+  public let fragmentParameters: [Swift.String : Swift.String]
+  public let isQcart: Swift.Bool
+  public let skus: [QcartSDK.QcartSKU]
+  public init(url: Swift.String?, pathSegments: [Swift.String], queryParameters: [Swift.String : Swift.String], fragmentParameters: [Swift.String : Swift.String], isQcart: Swift.Bool, skus: [QcartSDK.QcartSKU])
+  public func toJSON() -> Swift.String?
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct QcartSKU : Swift.Codable {
+  public let sku: Swift.String
+  public let quantity: Swift.Int
+  public init(sku: Swift.String, quantity: Swift.Int)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct QcartParser {
+  public static func handle(url: Foundation.URL?) -> QcartSDK.QcartResult
+}
+extension QcartSDK.QcartManager : Swift.Sendable {}
