@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'qcart_sdk_flutter'
-  s.version          = '0.0.2'
+  s.version          = '0.0.3'
   s.summary          = 'Flutter wrapper around the native Qcart SDK.'
   s.description      = <<-DESC
 Qcart Flutter plugin that bridges to the native Qcart iOS SDK and Android SDK.
