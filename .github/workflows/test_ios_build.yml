@@ -21,6 +21,28 @@ jobs:
           cd example
           flutter pub get
 
+      - name: Verificar integridad del XCFramework (Anti-Falsos Positivos)
+        run: |
+          echo "🔍 Inspeccionando QcartSDK.xcframework..."
+          
+          FRAMEWORK_PATH="ios/QcartSDK.xcframework"
+          
+          # 1. Revisar dispositivo físico (ARM64)
+          if [ ! -d "$FRAMEWORK_PATH/ios-arm64/QcartSDK.framework/Modules" ]; then
+            echo "❌ ERROR: Falta la carpeta Modules en ios-arm64."
+            echo "El cliente verá el error 'Unable to resolve module dependency'."
+            exit 1
+          fi
+
+          # 2. Revisar simulador
+          if [ ! -d "$FRAMEWORK_PATH/ios-arm64_x86_64-simulator/QcartSDK.framework/Modules" ]; then
+            echo "❌ ERROR: Falta la carpeta Modules en el simulador."
+            echo "El cliente verá el error 'Unable to resolve module dependency'."
+            exit 1
+          fi
+
+          echo "✅ ÉXITO: El XCFramework está completo y contiene las interfaces de Swift."
+
       - name: Compilar app de ejemplo para iOS
         run: |
           cd example
