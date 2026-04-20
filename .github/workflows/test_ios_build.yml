@@ -46,8 +46,7 @@ jobs:
       - name: Compilar app de ejemplo para iOS
         run: |
           cd example
-          # flutter build ios --no-codesign --simulator
-          flutter build ios --no-codesign --release
+          flutter build ios --no-codesign --simulator
 
       - name: Subir la App de Ejemplo (Artifact)
         uses: actions/upload-artifact@v4
