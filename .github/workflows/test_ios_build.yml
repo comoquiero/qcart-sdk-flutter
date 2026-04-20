@@ -8,51 +8,58 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Descargar el código del plugin
+      - name: Checkout plugin code
         uses: actions/checkout@v4
 
-      - name: Instalar Flutter
+      - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Descargar dependencias del ejemplo
+      - name: Get example dependencies
         run: |
           cd example
           flutter pub get
 
-      - name: Verificar integridad del XCFramework (Anti-Falsos Positivos)
+      - name: Verify XCFramework integrity (Anti-False Positives)
         run: |
-          echo "🔍 Inspeccionando QcartSDK.xcframework..."
+          echo "🔍 Inspecting QcartSDK.xcframework..."
           
           FRAMEWORK_PATH="ios/QcartSDK.xcframework"
           
-          # 1. Revisar dispositivo físico (ARM64)
+          # 1. Check physical device (ARM64)
           if [ ! -d "$FRAMEWORK_PATH/ios-arm64/QcartSDK.framework/Modules" ]; then
-            echo "❌ ERROR: Falta la carpeta Modules en ios-arm64."
-            echo "El cliente verá el error 'Unable to resolve module dependency'."
+            echo "❌ ERROR: Modules folder is missing in ios-arm64."
+            echo "The client will see the error 'Unable to resolve module dependency'."
             exit 1
           fi
 
-          # 2. Revisar simulador
+          # 2. Check simulator
           if [ ! -d "$FRAMEWORK_PATH/ios-arm64_x86_64-simulator/QcartSDK.framework/Modules" ]; then
-            echo "❌ ERROR: Falta la carpeta Modules en el simulador."
-            echo "El cliente verá el error 'Unable to resolve module dependency'."
+            echo "❌ ERROR: Modules folder is missing in the simulator."
+            echo "The client will see the error 'Unable to resolve module dependency'."
             exit 1
           fi
 
-          echo "✅ ÉXITO: El XCFramework está completo y contiene las interfaces de Swift."
+          echo "✅ SUCCESS: The XCFramework is complete and contains the Swift interfaces."
 
-      - name: Compilar app de ejemplo para iOS
+      - name: Verify app builds for Production (Physical Device)
         run: |
           cd example
+          # This catches AOT, ARM64, and Code Stripping errors
+          flutter build ios --no-codesign --release
+
+      - name: Build example app for Simulator
+        run: |
+          cd example
+          # This generates the binary that will be uploaded in the next step
           flutter build ios --no-codesign --simulator
 
-      - name: Subir la App de Ejemplo (Artifact)
+      - name: Upload Example App (Artifact)
         uses: actions/upload-artifact@v4
         with:
-          name: App-Ejemplo-iOS
-          # Esta es la ruta estándar donde Flutter deja el ejecutable del simulador
+          name: iOS-Example-App
+          # This is the standard path where Flutter outputs the simulator executable
           path: example/build/ios/iphonesimulator/Runner.app
-          # Opcional: Si Appetize te pide un .zip, puedes comprimirlo antes o
-          # simplemente subir la carpeta .app y GitHub la zipeará automáticamente.
+          # Optional: If Appetize requires a .zip, you can compress it first or
+          # just upload the .app folder and GitHub will zip it automatically.
